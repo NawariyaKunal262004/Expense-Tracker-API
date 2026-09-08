@@ -22,6 +22,10 @@ app.use('/products', ProductRouter);
 app.use('/expenses',ensureAuthenticated , ExpenseRouter);
 
 
-app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`)
-})
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server is running on ${PORT}`);
+    });
+}
+
+module.exports = app;
