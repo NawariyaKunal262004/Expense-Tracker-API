@@ -6,6 +6,8 @@ const AuthRouter = require('./Routes/AuthRouter');
 const ProductRouter = require('./Routes/ProductRouter');
 const ExpenseRouter = require('./Routes/ExpenseRouter');
 const ensureAuthenticated = require('./Middlewares/Auth');
+const swaggerUi = require('swagger-ui-express');
+const openapiSpecification = require('./swagger');
 
 require('dotenv').config();
 require('./Models/db');
@@ -13,7 +15,7 @@ const PORT = process.env.PORT || 8080;
 
 module.exports = app;
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.json({
         status: "success",
         message: "Welcome to the Expense Tracker API!",
@@ -21,6 +23,12 @@ app.get('/', (req, res) => {
         documentation: "https://github.com/NawariyaKunal262004/Expense-Tracker-API/tree/main#readme"
     });
 });
+
+app.get('/', (req, res) => {
+    res.redirect('/api-docs');
+});
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 app.get('/ping', (req, res) => {
     res.send('PONG');
